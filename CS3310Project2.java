@@ -1,9 +1,12 @@
 class CS3310Project2 {
 
-    public static int[] dijkstras(int[][]graph,int nodes){
+    public static int[] dijkstras(int[][]graph){
 
         //Starting node
         int currentNode = 0;
+
+        //Getting the amount of nodes
+        int nodes = graph[0].length;
 
         //Initalizing the solution array that we will return and setting it to zero
         int distance[] = new int[nodes];
@@ -61,10 +64,13 @@ class CS3310Project2 {
 
     }
 
-    public static int[][] floydWarshall(int[][]graph,int nodes){
+    public static int[][] floydWarshall(int[][]graph){
 
         //Initializing the solution graph
         int[][] solution = graph;
+
+        //Getting number of nodes
+        int nodes = graph[0].length;
 
         //Theres a bug with infinity so we have to add all the numbers together and subtract from infinity to represent infinity
         int highestNumber = 0;
@@ -125,7 +131,7 @@ class CS3310Project2 {
     }
 
     //Helper method to print Djisktra's
-    public static void printDj(int[] array){
+    public static void printArray(int[] array){
 
         System.out.print("[ ");
 
@@ -140,7 +146,7 @@ class CS3310Project2 {
     }
 
     //Helper method to print Floyd-Warshell
-    public static void printFw(int[][] array){
+    public static void print2dArray(int[][] array){
 
 
         for(int i = 0; i < array.length; i++){
@@ -169,12 +175,72 @@ class CS3310Project2 {
 
             for(int j = 0; j < nodes; j++){
                 
-                array[i][j] = counter;
-                counter += 1;
+                if(i ==j){
+                    array[i][j] = 0;
+                }
+
+                else{
+                    array[i][j] = counter;
+                    counter += 1;
+                }
 
             }
 
         }
+
+        return array;
+
+        
+    }
+
+    public static int[][] matrixMakerSparse(int[][] array){
+
+        int nodes = array[0].length;
+
+        for(int i = 0; i < nodes; i++){
+
+            for(int j = 0; j < nodes; j++){
+                
+                if(i == j){
+
+                    array[i][j] = 0;
+
+                }
+                
+                else if (j + 1 == i ){
+
+                    array[j][i] = i;
+
+                }
+
+                else if(j == nodes){
+
+                    array[0][j] = i;
+
+                }
+
+                else{
+                    
+                    array[i][j] = -1;
+                }
+
+            }
+
+        }
+
+        for(int i = 0; i < nodes; i++){
+
+            for(int j = 0; j < nodes; j++){
+
+                if(i + 1 == j){
+                    array[j][i] = -1;
+                }
+
+            }
+
+        }
+
+        array[nodes-1][0] = nodes;
 
         return array;
 
