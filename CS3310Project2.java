@@ -1,18 +1,4 @@
-class CS33310Project2 {
-    public static void main(String[] args) {
-        int[][] testGraph = {{0,3,-1,2,-1,-1,6},
-                             {5,0,6,-1,1,-1,-1},
-                             {-1,-1,0,-1,-1,1,-1},
-                             {-1,2,-1,0,3,-1,-1},
-                             {-1,-1,-1,-1,0,4,-1},
-                             {-1,-1,-1,-1,-1,0,-1},
-                             {-1,-1,-1,-1,-1,2,0}};
-
-        int[] solution = dijkstras(testGraph, 7);
-        for(int i=0; i < solution.length; i++){
-            System.out.println(solution[i]);
-        } 
-    }
+class CS3310Project2 {
 
     public static int[] dijkstras(int[][]graph,int nodes){
 
@@ -65,6 +51,7 @@ class CS33310Project2 {
                 }  
 
             }
+            //Restting the smallest number, checking the node off as true and setting the current node as the next node
             smallestNumero = -2;
             beenChecked[nextNode] = true;
             currentNode = nextNode;
@@ -74,6 +61,60 @@ class CS33310Project2 {
 
     }
 
+    public static int[][] floydWarshall(int[][]graph,int nodes){
+
+        //Initializing the solution graph
+        int[][] solution = graph;
+
+        //Theres a bug with infinity so we have to add all the numbers together and subtract from infinity to represent infinity
+        int highestNumber = 0;
+
+
+        //Adding all the numbers of the original graph together
+        for(int i=0; i < solution.length; i++){
+
+            for(int j=0; j < solution.length; j++){ 
+
+                highestNumber += solution[i][j];
+            
+            }
+    
+        }
+
+        //We previously represented -1 as infinity so now we must use infinity
+        for(int i=0; i < solution.length; i++){
+
+            for(int j=0; j < solution.length; j++){ 
+
+                if(graph[i][j] == -1){
+
+                    solution[i][j] = Integer.MAX_VALUE-highestNumber;
+
+                }
+            }
+    
+        }
+
+        //Main Algorithm
+        for(int k = 0; k < nodes; k++){
+
+            for(int u = 0; u < nodes; u++){
+
+                for(int v = 0; v < nodes; v++){
+
+                        solution[u][v] = Math.min(solution[u][v],solution[u][k] + solution[k][v]);
+                    
+                }
+            
+            }
+
+        }
+
+        return solution;
+        
+    }
+
+    //Helper method to determine if we are finished
     public static boolean allTrue(boolean[] array){
         for(int i = 0; i < array.length; i++){
             if (array[i] == false){
@@ -83,5 +124,59 @@ class CS33310Project2 {
         return true;
     }
 
-    //public static int
+    //Helper method to print Djisktra's
+    public static void printDj(int[] array){
+
+        System.out.print("[ ");
+
+        for(int i = 0; i < array.length; i++){
+
+          System.out.print(array[i] + " ");
+
+        }
+
+        System.out.print("]");
+    
+    }
+
+    //Helper method to print Floyd-Warshell
+    public static void printFw(int[][] array){
+
+
+        for(int i = 0; i < array.length; i++){
+            
+            System.out.print("[");
+
+            for(int j = 0; j < array.length; j++){
+
+                System.out.print(array[i][j] + " ");
+
+            }
+
+            System.out.print("]\n");
+
+        }
+    
+    }
+
+    //Helper method to create large matrices
+    public static int[][] matrixMaker(int[][] array){
+
+        int nodes = array[0].length;
+        int counter = 0;
+
+        for(int i = 0; i < nodes; i++){
+
+            for(int j = 0; j < nodes; j++){
+                
+                array[i][j] = counter;
+                counter += 1;
+
+            }
+
+        }
+
+        return array;
+
+    }
 }
